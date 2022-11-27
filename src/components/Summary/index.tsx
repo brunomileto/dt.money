@@ -1,53 +1,31 @@
-import { Container } from "./style";
-import outcomeImg from "../../assets/outcome.svg";
-import incomeImg from "../../assets/income.svg";
-import totalImg from "../../assets/total.svg";
-import { formatCurrency } from "../../utils";
-import { useTransactions } from "../../hooks/useTransactions";
+import { ArrowCircleDown, ArrowCircleUp, CurrencyDollar } from 'phosphor-react';
 
-export const Summary = () => {
-  const { transactions } = useTransactions();
+import { SummaryCard, SummaryContainer } from './style';
 
-  const summary = transactions.reduce(
-    (accumulator, transaction) => {
-      if (transaction.type === "deposit") {
-        accumulator.deposits += transaction.amount;
-        accumulator.total += transaction.amount;
-      } else {
-        accumulator.withdraws += transaction.amount;
-        accumulator.total -= transaction.amount;
-      }
-      return accumulator;
-    },
-    {
-      deposits: 0,
-      withdraws: 0,
-      total: 0,
-    }
-  );
-
+export function Summary() {
   return (
-    <Container>
-      <div>
+    <SummaryContainer>
+      <SummaryCard>
         <header>
-          <p>Entradas</p> <img src={incomeImg} alt="Entradas" />
+          <span>Entradas</span>
+          <ArrowCircleUp size={32} color="#00b37e" />
         </header>
-        <strong>{formatCurrency(summary.deposits)}</strong>
-      </div>
-
-      <div>
+        <strong>R$ 17.400,00</strong>
+      </SummaryCard>
+      <SummaryCard>
         <header>
-          <p>Saídas</p> <img src={outcomeImg} alt="Saídas" />
+          <span>Saídas</span>
+          <ArrowCircleDown size={32} color="#F75A68" />
         </header>
-        <strong>-{formatCurrency(summary.withdraws)}</strong>
-      </div>
-
-      <div className="highlight">
+        <strong>R$ 17.400,00</strong>
+      </SummaryCard>
+      <SummaryCard variant="green">
         <header>
-          <p>Total</p> <img src={totalImg} alt="total" />
+          <span>Total</span>
+          <CurrencyDollar size={32} color="#fff" />
         </header>
-        <strong>-{formatCurrency(summary.total)}</strong>
-      </div>
-    </Container>
+        <strong>R$ 17.400,00</strong>
+      </SummaryCard>
+    </SummaryContainer>
   );
-};
+}
